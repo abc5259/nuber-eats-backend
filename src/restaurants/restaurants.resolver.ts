@@ -5,15 +5,16 @@ import { RestaurantService } from './restaurant.service';
 
 @Resolver((of) => Restaurant) //Restaurant의 resolver이라는 것
 export class RestaurantResolver {
-  //Restaurant repository을 이용하기위해 RestaurantService을
   constructor(private readonly restaurantService: RestaurantService) {}
+
   @Query((returns) => [Restaurant])
   restaurants(): Promise<Restaurant[]> {
     return this.restaurantService.getAll();
   }
+
   @Mutation((returns) => Boolean)
   async createRestaurant(
-    @Args() createRestaurantDto: CreateRestaurantDto,
+    @Args('input') createRestaurantDto: CreateRestaurantDto,
   ): Promise<boolean> {
     try {
       this.restaurantService.createRestaurant(createRestaurantDto);

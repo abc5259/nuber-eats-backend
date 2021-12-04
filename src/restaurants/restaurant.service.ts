@@ -10,9 +10,11 @@ export class RestaurantService {
     @InjectRepository(Restaurant)
     private readonly restaurants: Repository<Restaurant>,
   ) {}
+
   getAll(): Promise<Restaurant[]> {
     return this.restaurants.find();
   }
+
   createRestaurant(
     createRestaurantDto: CreateRestaurantDto,
   ): Promise<Restaurant> {
