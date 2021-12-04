@@ -10,7 +10,7 @@ export class CreateRestaurantDto {
 
   @Field((type) => Boolean)
   @IsBoolean()
-  isVegan: Boolean;
+  isVegan: boolean;
 
   @Field((type) => String)
   @IsString()

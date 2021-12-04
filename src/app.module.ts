@@ -31,7 +31,7 @@ import { Restaurant } from './restaurants/entities/restaurant.entity';
       //TypeOrm이 entity를 찾고 열어서 migration 해주는것,DB의 구성을 자동으로 바꿔준다.
       //production에서는 실제 데이터를 가지고 있으니까 DB를 수동으로 바꾸고 싶을 때가 있기 때문
       synchronize: process.env.NODE_ENV !== 'prod',
-      logging: true,
+      logging: process.env.NODE_ENV !== 'prod',
       entities: [Restaurant],
     }),
     GraphQLModule.forRoot({
