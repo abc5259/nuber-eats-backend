@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantsModule } from './restaurants/restaurants.module';
+import { Restaurant } from './restaurants/entities/restaurant.entity';
 
 @Module({
   imports: [
@@ -27,8 +28,11 @@ import { RestaurantsModule } from './restaurants/restaurants.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: true, //데이터베이스를 너의 모듈의 현재 상태로 마이크래이션한다는 뜻
+      //TypeOrm이 entity를 찾고 열어서 migration 해주는것,DB의 구성을 자동으로 바꿔준다.
+      //production에서는 실제 데이터를 가지고 있으니까 DB를 수동으로 바꾸고 싶을 때가 있기 때문
+      synchronize: process.env.NODE_ENV !== 'prod',
       logging: true,
+      entities: [Restaurant],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true, //메모리에 저장
