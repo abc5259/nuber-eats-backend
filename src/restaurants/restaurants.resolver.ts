@@ -1,5 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateRestaurantDto } from './dtos/create-restaurant.dto';
+import { UpdateRestaurantDto } from './dtos/update-restaurant.dto';
 import { Restaurant } from './entities/restaurant.entity';
 import { RestaurantService } from './restaurant.service';
 
@@ -16,6 +17,7 @@ export class RestaurantResolver {
   async createRestaurant(
     @Args('input') createRestaurantDto: CreateRestaurantDto,
   ): Promise<boolean> {
+    console.log(createRestaurantDto);
     try {
       this.restaurantService.createRestaurant(createRestaurantDto);
       return true;
@@ -23,5 +25,14 @@ export class RestaurantResolver {
       console.log(error);
       return false;
     }
+  }
+
+  @Mutation((returns) => Boolean)
+  async updateRestaurant(
+    // @Args('id') id: number,
+    // @Args('input') data: UpdateRestaurantDto,
+    @Args('input') updateRestaurantDto: UpdateRestaurantDto,
+  ) {
+    return true;
   }
 }
