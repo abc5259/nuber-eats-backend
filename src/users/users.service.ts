@@ -6,6 +6,7 @@ import { CreateAccountInput } from './dtos/create-account.dto';
 import { LoginInput } from './dtos/login.dto';
 import { User } from './entities/user.entity';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from 'src/jwt/jwt.service';
 
 @Injectable()
 export class UsersService {
@@ -13,8 +14,9 @@ export class UsersService {
     @InjectRepository(User)
     private readonly users: Repository<User>,
     private readonly config: ConfigService,
+    private readonly jwtService: JwtService,
   ) {
-    console.log(config);
+    console.log(this.jwtService.hello());
   }
 
   //create User
@@ -57,7 +59,7 @@ export class UsersService {
         return { ok: false, error: 'Wrong password' };
       }
       const token = jwt.sign({ id: user.id }, this.config.get('SECRET_KEY'));
-      return { ok: true, token: 'goododo' };
+      return { ok: true, token };
     } catch (error) {
       return { ok: false, error };
     }
