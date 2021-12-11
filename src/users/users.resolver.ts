@@ -14,11 +14,6 @@ import { UsersService } from './users.service';
 export class UsesrResolver {
   constructor(private readonly usesrService: UsersService) {}
 
-  @Query((returns) => Boolean)
-  hi(): boolean {
-    return true;
-  }
-
   @Mutation((returns) => CreateAccountOutput)
   async createAccount(
     @Args('input') createAccountInput: CreateAccountInput,

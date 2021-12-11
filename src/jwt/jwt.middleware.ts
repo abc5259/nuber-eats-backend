@@ -13,15 +13,14 @@ export class JwtMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     if ('x-jwt' in req.headers) {
       const token = req.headers['x-jwt'];
-      const decoded = this.jwtService.verify(token.toString());
-      console.log(decoded);
-      if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
-        try {
+      try {
+        const decoded = this.jwtService.verify(token.toString());
+        if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
           const user = await this.userService.findById(decoded['id']);
           // 이 request는 HTTP request같은건데 이걸 graphql resolver에 전달해 줘야한다.
           req['user'] = user;
-        } catch (e) {}
-      }
+        }
+      } catch (e) {}
     }
     next();
   }
