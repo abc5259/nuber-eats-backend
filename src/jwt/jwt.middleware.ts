@@ -18,8 +18,8 @@ export class JwtMiddleware implements NestMiddleware {
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
         try {
           const user = await this.userService.findById(decoded['id']);
-          // console.log(user);
-          // req['user'] = user;
+          // 이 request는 HTTP request같은건데 이걸 graphql resolver에 전달해 줘야한다.
+          req['user'] = user;
         } catch (e) {}
       }
     }
