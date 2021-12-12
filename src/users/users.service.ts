@@ -12,7 +12,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly users: Repository<User>,
-    private readonly config: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -57,6 +56,7 @@ export class UsersService {
       }
       // const token = jwt.sign({ id: user.id }, this.config.get('PRIVATE_KEY'));
       const token = this.jwtService.sign(user.id);
+      console.log(token);
       return { ok: true, token };
     } catch (error) {
       return { ok: false, error };

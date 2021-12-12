@@ -7,6 +7,7 @@ import {
   CreateAccountOutput,
 } from './dtos/create-account.dto';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
+import { UserPofileOutput, UserProfileInput } from './dtos/user-profile.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -43,5 +44,27 @@ export class UsesrResolver {
     //AuthUser에서 return한 값이 authUser에 들어간다.
     console.log(authUser);
     return authUser;
+  }
+
+  @UseGuards(AuthGuard)
+  @Query((returns) => UserPofileOutput)
+  async userProfile(
+    @Args() userProfileInput: UserProfileInput,
+  ): Promise<UserPofileOutput> {
+    try {
+      const user = await this.usesrService.findById(userProfileInput.userId);
+      if (!user) {
+        throw Error();
+      }
+      return {
+        ok: true,
+        user,
+      };
+    } catch (error) {
+      return {
+        error: 'User Not Found',
+        ok: false,
+      };
+    }
   }
 }
