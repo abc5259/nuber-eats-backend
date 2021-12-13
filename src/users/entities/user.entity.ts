@@ -47,6 +47,10 @@ export class User extends CoreEntity {
     }
   }
 
+  @Column({ default: false })
+  @Field((type) => Boolean)
+  verified: boolean;
+
   async checkPassword(aPassword: string): Promise<boolean> {
     try {
       const ok = await bcrypt.compare(aPassword, this.password);

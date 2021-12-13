@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
+import { Verification } from './users/entities/verification.entity';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
       //production에서는 실제 데이터를 가지고 있으니까 DB를 수동으로 바꾸고 싶을 때가 있기 때문
       synchronize: process.env.NODE_ENV !== 'prod',
       logging: process.env.NODE_ENV !== 'prod',
-      entities: [User],
+      entities: [User, Verification],
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true, //메모리에 저장
