@@ -55,7 +55,10 @@ export class UsersService {
     // make a JMT and give it to the user
     try {
       // find ths user with the email
-      const user = await this.users.findOne({ email });
+      const user = await this.users.findOne(
+        { email },
+        { select: ['id', 'password'] },
+      );
       if (!user) {
         return { ok: false, error: 'User not found' };
       }
@@ -94,16 +97,22 @@ export class UsersService {
   }
 
   async verifyEmail(code: string): Promise<boolean> {
-    const verification = await this.verifications.findOne(
-      { code },
-      { relations: ['user'] }, //user전체 다 불러와준다.
-      // { loadRelationIds: true }, //id만 불러와준다.
-    );
-    if (verification) {
-      console.log(verification, verification.user);
-      verification.user.verified = true;
-      this.users.save(verification.user);
+    try {
+      const verification = await this.verifications.findOne(
+        { code },
+        { relations: ['user'] }, //user전체 다 불러와준다.
+        // { loadRelationIds: true }, //id만 불러와준다.
+      );
+      if (verification) {
+        console.log(verification);
+        verification.user.verified = true;
+        this.users.save(verification.user);
+        return true;
+      }
+      throw new Error();
+    } catch (e) {
+      console.log(e);
+      return false;
     }
-    return false;
   }
 }
