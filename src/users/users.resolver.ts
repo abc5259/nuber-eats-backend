@@ -8,7 +8,7 @@ import {
 } from './dtos/create-account.dto';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit.profile';
 import { LoginInput, LoginOutput } from './dtos/login.dto';
-import { UserPofileOutput, UserProfileInput } from './dtos/user-profile.dto';
+import { UserProfileInput, UserProfileOutput } from './dtos/user-profile.dto';
 import { VerifyEmailInput, VerifyEmailOutput } from './dtos/verify-email.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -21,88 +21,42 @@ export class UsesrResolver {
   async createAccount(
     @Args('input') createAccountInput: CreateAccountInput,
   ): Promise<CreateAccountOutput> {
-    try {
-      return await this.usesrService.createAccount(createAccountInput);
-    } catch (error) {
-      return {
-        ok: false,
-        error,
-      };
-    }
+    return this.usesrService.createAccount(createAccountInput);
   }
 
   @Mutation((returns) => LoginOutput)
   async login(@Args('input') loginInput: LoginInput) {
-    try {
-      return await this.usesrService.login(loginInput);
-    } catch (error) {
-      return { ok: false, error };
-    }
+    return this.usesrService.login(loginInput);
   }
 
   @Query((returns) => User)
   @UseGuards(AuthGuard)
   me(@AuthUser() authUser: User) {
     //AuthUser에서 return한 값이 authUser에 들어간다.
-    console.log(authUser);
     return authUser;
   }
 
   @UseGuards(AuthGuard)
-  @Query((returns) => UserPofileOutput)
-  async userProfile(
+  @Query((returns) => UserProfileOutput)
+  userProfile(
     @Args() userProfileInput: UserProfileInput,
-  ): Promise<UserPofileOutput> {
-    try {
-      const user = await this.usesrService.findById(userProfileInput.userId);
-      if (!user) {
-        throw Error();
-      }
-      return {
-        ok: true,
-        user,
-      };
-    } catch (error) {
-      return {
-        error: 'User Not Found',
-        ok: false,
-      };
-    }
+  ): Promise<UserProfileOutput> {
+    return this.usesrService.findById(userProfileInput.userId);
   }
 
   @UseGuards(AuthGuard)
   @Mutation((returns) => EditProfileOutput)
-  async editProfile(
+  editProfile(
     @AuthUser() authUser: User,
     @Args('input') editProfileInput: EditProfileInput,
   ): Promise<EditProfileOutput> {
-    try {
-      await this.usesrService.editProfile(authUser.id, editProfileInput);
-      return {
-        ok: true,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error,
-      };
-    }
+    return this.usesrService.editProfile(authUser.id, editProfileInput);
   }
 
   @Mutation((returns) => VerifyEmailOutput)
-  async verifyEmail(
+  verifyEmail(
     @Args('input') { code }: VerifyEmailInput,
   ): Promise<VerifyEmailOutput> {
-    try {
-      await this.usesrService.verifyEmail(code);
-      return {
-        ok: true,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error,
-      };
-    }
+    return this.usesrService.verifyEmail(code);
   }
 }
