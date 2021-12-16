@@ -70,7 +70,6 @@ export class UsersService {
       }
       // const token = jwt.sign({ id: user.id }, this.config.get('PRIVATE_KEY'));
       const token = this.jwtService.sign(user.id);
-      console.log(token);
       return { ok: true, token };
     } catch (error) {
       return { ok: false, error };
@@ -80,7 +79,6 @@ export class UsersService {
   async findById(id: number): Promise<UserProfileOutput> {
     try {
       const user = await this.users.findOne({ id });
-      console.log(user);
       if (user) {
         return {
           ok: true,
@@ -123,7 +121,6 @@ export class UsersService {
         // { loadRelationIds: true }, //id만 불러와준다.
       );
       if (verification) {
-        console.log(verification);
         verification.user.verified = true;
         await this.users.save(verification.user);
         await this.verifications.delete(verification.id);
