@@ -26,8 +26,6 @@ export class MailService {
     form.append('subject', subject);
     form.append('template', template);
     emailVars.forEach((eVar) => form.append(`v:${eVar.key}`, eVar.value));
-    // form.append('v:code', 'dwdaw');
-    // form.append('v:username', 'LeeJaeHoon');
     try {
       const response = await got(
         `https://api.mailgun.net/v3/${this.options.domain}/messages`,

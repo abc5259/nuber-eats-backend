@@ -44,8 +44,8 @@ export class UsesrResolver {
     return this.usesrService.findById(userProfileInput.userId);
   }
 
-  @UseGuards(AuthGuard)
   @Mutation((returns) => EditProfileOutput)
+  @UseGuards(AuthGuard)
   editProfile(
     @AuthUser() authUser: User,
     @Args('input') editProfileInput: EditProfileInput,
